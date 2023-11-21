@@ -1,0 +1,18 @@
+proxies:
+  - name: NAMA
+    type: vmess
+    server: BUG
+    port: 443
+    uuid: UUID
+    alterId: 0
+    cipher: auto
+    udp: true
+    tls: true
+    skip-cert-verify: true
+    servername: SERVER
+    network: ws
+    ws-opts:
+      path: /vmess
+      headers:
+        Host: SERVER
+    interface-name: usb0
