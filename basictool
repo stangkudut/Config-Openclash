@@ -11,9 +11,7 @@ MB='\e[35;1m'
 CB='\e[36;1m'
 WB='\e[37;1m'
 BW='\e[30;48;5;15m'
-secs_to_human() {
 echo -e "${WB}Installation time : $(( ${1} / 3600 )) hours $(( (${1} / 60) % 60 )) minute's $(( ${1} % 60 )) seconds${NC}"
-}
 start=$(date +%s)
 sed -i 's/option check_signature/# option check_signature/g' /etc/opkg.conf
 echo "src/gz custom_generic https://raw.githubusercontent.com/lrdrdn/my-opkg-repo/main/generic" >> /etc/opkg/customfeeds.conf
