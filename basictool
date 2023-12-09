@@ -1,0 +1,75 @@
+rm -rf basictool
+clear
+BGreen='\e[1;32m'
+NC='\e[0m'
+DEFBOLD='\e[39;1m'
+RB='\e[31;1m'
+GB='\e[32;1m'
+YB='\e[33;1m'
+BB='\e[34;1m'
+MB='\e[35;1m'
+CB='\e[36;1m'
+WB='\e[37;1m'
+BW='\e[30;48;5;15m'
+secs_to_human() {
+echo -e "${WB}Installation time : $(( ${1} / 3600 )) hours $(( (${1} / 60) % 60 )) minute's $(( ${1} % 60 )) seconds${NC}"
+}
+start=$(date +%s)
+sed -i 's/option check_signature/# option check_signature/g' /etc/opkg.conf
+echo "src/gz custom_generic https://raw.githubusercontent.com/lrdrdn/my-opkg-repo/main/generic" >> /etc/opkg/customfeeds.conf
+echo "src/gz custom_arch https://raw.githubusercontent.com/lrdrdn/my-opkg-repo/main/$(cat /etc/os-release | grep OPENWRT_ARCH | awk -F '"' '{print $2}')" >> /etc/opkg/customfeeds.conf
+opkg update
+opkg install bash
+opkg install luci-app-ttyd luci-app-tinyfm
+wget --no-check-certificate https://install.speedtest.net/app/cli/ookla-speedtest-1.1.1-linux-aarch64.tgz -O /tmp/speedtest.tgz
+tar -xzvf /tmp/speedtest.tgz -C /usr/bin/
+chmod +x /usr/bin/speedtest
+opkg remove dnsmasq
+opkg install dnsmasq-full
+opkg install iptables dnsmasq-full coreutils coreutils-nohup bash curl \
+ca-certificates ipset ip-full iptables-mod-tproxy iptables-mod-extra libcap \
+libcap-bin ruby ruby-yaml kmod-tun luci-base iptables jsonfilter luci-compat luci-app-openclash
+rm -rf /etc/openclash/proxy_provider
+mkdir /etc/openclash/proxy_provider
+cd etc/openclash/proxy_provider
+echo -e "${GB}[ INFO ]${NC} ${YB}Mendownload Proxy Provider${NC}"
+wget -q -O NUSANTARA.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/proxy_provider/NUSANTARA.yaml"
+wget -q -O SINGA.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/proxy_provider/SINGA.yaml"
+sleep 0.5
+rm -rf /etc/openclash/rule_provider
+mkdir /etc/openclash/rule_provider
+cd /etc/openclash/rule_provider
+echo -e "${GB}[ INFO ]${NC} ${YB}Mendownload Rule Provider${NC}"
+wget -q -O 18+.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/rule_provider/18%2B.yaml"
+wget -q -O bankingewallet.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/rule_provider/bankingewallet.yaml"
+wget -q -O basicads.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/rule_provider/basicads.yaml"
+wget -q -O gametcp.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/rule_provider/gametcp.yaml"
+wget -q -O gaming.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/rule_provider/gaming.yaml"
+wget -q -O indo.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/rule_provider/indo.yaml"
+wget -q -O marketplace.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/rule_provider/marketplace.yaml"
+wget -q -O nsfw.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/rule_provider/nsfw.yaml"
+wget -q -O personalads.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/rule_provider/personalads.yaml"
+wget -q -O portgames.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/rule_provider/portgames.yaml"
+wget -q -O sosmed.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/rule_provider/sosmed.yaml"
+wget -q -O speed.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/rule_provider/speed.yaml"
+wget -q -O streaming.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/rule_provider/streaming.yaml"
+wget -q -O wa.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/rule_provider/wa.yaml"
+wget -q -O youtube.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/rule_provider/youtube.yaml"
+wget -q -O zerotier.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/rule_provider/zerotier.yaml"
+sleep 0.5
+cd
+wget --no-check-certificate -O /usr/bin/neofetch "https://raw.githubusercontent.com/dylanaraps/neofetch/master/neofetch"
+chmod +x /usr/bin/neofetch
+opkg install kmod-usb-serial-option kmod-usb-serial-qualcomm \
+kmod-usb-acm sms-tool wget-nossl luci-app-3ginfo-lite
+
+clear
+echo ""
+echo ""
+echo -e "${BB}╔═══════════════════════════════════════════════════════╗${NC}"
+echo -e "${BB}║${BW}    ----- [ SELESAI MENGINSTALL BASIC TOOLS] -----     ${NC}${BB}║${NC} "
+echo -e "${BB}║═══════════════════════════════════════════════════════║${NC}"
+rm -f xray
+secs_to_human "$(($(date +%s) - ${start}))"
+sleep 5
+clear
