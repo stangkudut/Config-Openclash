@@ -1,7 +1,7 @@
 cat <<'EOF' >/usr/lib/lua/luci/controller/aria2.lua
 module("luci.controller.aria2", package.seeall)
 function index()
-entry({"admin","services","aria2"}, template("aria2"), _("Aria2 Downloader"), 46).leaf=true
+entry({"admin","nas","aria2"}, template("aria2"), _("Aria2 Downloader"), 46).leaf=true
 end
 EOF
 cat <<'EOF' >/usr/lib/lua/luci/view/aria2.htm
