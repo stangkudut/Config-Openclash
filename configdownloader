@@ -1,0 +1,34 @@
+echo -e "----- [ OPENCLASH CONFIG DOWNLOADER ] -----"
+sleep 5
+echo -e "----- [ SEDANG MENDOWNLOAD CONFIG ] -----"
+cd /etc/openclash/config
+wget -q -O ST4NGKUDUT.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/config/ST4NGKUDUT.yaml"
+clear
+echo -e "----- [ SEDANG MENDOWNLOAD PROXY PROVIDER ] -----"
+cd /etc/openclash/proxy_provider
+wget -q -O NUSANTARA.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/proxy_provider/NUSANTARA.yaml"
+wget -q -O SINGA.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/proxy_provider/SINGA.yaml"
+sleep 3
+echo -e "----- [ SEDANG MENDOWNLOAD RULE PROVIDER ] -----"
+cd /etc/openclash/rule_provider
+wget -q -O 18+.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/rule_provider/18%2B.yaml"
+wget -q -O bankingewallet.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/rule_provider/bankingewallet.yaml"
+wget -q -O basicads.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/rule_provider/basicads.yaml"
+wget -q -O gametcp.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/rule_provider/gametcp.yaml"
+wget -q -O gaming.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/rule_provider/gaming.yaml"
+wget -q -O indo.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/rule_provider/indo.yaml"
+wget -q -O marketplace.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/rule_provider/marketplace.yaml"
+wget -q -O nsfw.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/rule_provider/nsfw.yaml"
+wget -q -O personalads.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/rule_provider/personalads.yaml"
+wget -q -O portgames.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/rule_provider/portgames.yaml"
+wget -q -O sosmed.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/rule_provider/sosmed.yaml"
+wget -q -O speed.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/rule_provider/speed.yaml"
+wget -q -O streaming.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/rule_provider/streaming.yaml"
+wget -q -O wa.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/rule_provider/wa.yaml"
+wget -q -O youtube.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/rule_provider/youtube.yaml"
+wget -q -O zerotier.yaml "https://raw.githubusercontent.com/stangkudut/Config-Openclash/main/rule_provider/zerotier.yaml"
+sleep 3
+clear
+echo -e "----- [ SELESAI MENGINSTALL BASIC TOOLS] -----"
+sleep 5
+clear
