@@ -1,1 +1,411 @@
-
+---
+mode: rule
+allow-lan: true
+unified-delay: true
+bind-address: "*"
+log-level: silent
+ipv6: false
+geodata-mode: true
+external-controller: 0.0.0.0:7777
+external-ui: "/usr/share/openclash/ui"
+tcp-concurrent: true
+interface-name: ''
+enable-process: false
+geodata-loader: memconservative
+inbound-tfo: true
+secret: ST4NGKUDUT
+profile:
+  store-selected: true
+  store-fake-ip: false
+experimental:
+  sniff-tls-sni: false
+  fingerprint: ''
+sniffer:
+  enable: true
+  parse-pure-ip: true
+hosts:
+  cacerts.digicert.com: 104.21.21.147
+  ota.googlezip.net: 127.0.0.1
+  ota-cache1.googlezip.net: 127.0.0.1
+  ota-cache2.googlezip.net: 127.0.0.1
+tun:
+  enable: true
+  stack: system
+  device: utun
+  auto-route: false
+  auto-detect-interface: false
+  dns-hijack:
+  - tcp://any:53
+dns:
+  enable: true
+  ipv6: false
+  prefer-h3: false
+  default-nameserver:
+  - 8.8.8.8
+  listen: 0.0.0.0:7874
+  use-hosts: true
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter:
+  - "*.local"
+  - "*.localhost"
+  nameserver:
+  - 1.1.1.1
+  fallback: []
+  fallback-filter:
+    geoip: false
+    geoip-code: "!ID"
+    geosite:
+    - GFW
+    ipcidr: []
+    domain:
+    - "+.google.com"
+    - "+.facebook.com"
+    - "+.youtube.com"
+tproxy-port: 7895
+mixed-port: 7893
+proxies:
+proxy-providers:
+  SG:
+    type: file
+    path: "./proxy_provider/SINGA.yaml"
+    health-check:
+      enable: true
+      url: http://www.gstatic.com/generate_204
+      interval: 60
+  ID:
+    type: file
+    path: "./proxy_provider/NUSANTARA.yaml"
+    health-check:
+      enable: true
+      url: http://www.gstatic.com/generate_204
+      interval: 60
+proxy-groups:
+- name: SPEEDTEST
+  type: select
+  strategy: round-robin
+  disable-udp: false
+  proxies:
+  - BALANCE
+  - NUSANTARA
+  - SINGA
+  use:
+  - SG
+  - ID
+- name: UMUM
+  type: select
+  disable-udp: false
+  proxies:
+  - BALANCE
+  - FALLBACK
+  - BEST-PING
+  - NUSANTARA
+  - SINGA
+  - DIRECT BESTPING
+  - DIRECT FALLBACK
+  use:
+  - SG
+  - ID
+- name: YOUTUBE & STREAMING
+  type: select
+  strategy: round-robin
+  disable-udp: false
+  proxies:
+  - BALANCE
+  - FALLBACK
+  - BEST-PING
+  - NUSANTARA
+  - SINGA
+  - DIRECT BESTPING
+  - DIRECT FALLBACK
+  - REJECT
+  use:
+  - SG
+  - ID
+- name: WHATSAPP
+  type: select
+  strategy: round-robin
+  disable-udp: false
+  proxies:
+  - BALANCE
+  - FALLBACK
+  - BEST-PING
+  - NUSANTARA
+  - SINGA
+  - REJECT
+  - DIRECT BESTPING
+  - DIRECT FALLBACK
+  use:
+  - SG
+  - ID
+- name: SOSMED
+  type: select
+  disable-udp: false
+  proxies:
+  - BALANCE
+  - FALLBACK
+  - BEST-PING
+  - NUSANTARA
+  - SINGA
+  - REJECT
+  - DIRECT BESTPING
+  - DIRECT FALLBACK
+  use:
+  - SG
+  - ID
+- name: SHOPPING
+  type: select
+  disable-udp: false
+  proxies:
+  - BALANCE
+  - FALLBACK
+  - BEST-PING
+  - NUSANTARA
+  - SINGA
+  - DIRECT BESTPING
+  - DIRECT FALLBACK
+  - REJECT
+  use:
+  - SG
+  - ID
+- name: GAMING - ROOM
+  type: select
+  disable-udp: false
+  proxies:
+  - NUSANTARA
+  - SINGA
+  - DIRECT BESTPING
+  - DIRECT FALLBACK
+  use:
+  - ID
+  - SG
+- name: GAMING - MATCH
+  type: select
+  disable-udp: false
+  proxies:
+  - DIRECT BESTPING
+  - DIRECT FALLBACK
+  - NUSANTARA
+  - SINGA
+  use:
+  - ID
+  - SG
+- name: BANKING & E-WALLET
+  type: select
+  strategy: round-robin
+  disable-udp: false
+  proxies:
+  - NUSANTARA
+  - SINGA
+  - DIRECT BESTPING
+  - DIRECT FALLBACK
+  use:
+  - ID
+  - SG
+- name: AKUN-INDO
+  type: select
+  disable-udp: false
+  proxies:
+  - BALANCE
+  - FALLBACK
+  - BEST-PING
+  - NUSANTARA
+  - DIRECT BESTPING
+  - DIRECT FALLBACK
+  use:
+  - ID
+- name: ZEROTIER
+  type: select
+  strategy: consistent-hashing
+  disable-udp: false
+  proxies:
+  - BALANCE
+  - NUSANTARA
+  - SINGA
+  - DIRECT BESTPING
+  - DIRECT FALLBACK
+- name: IKLAN
+  type: select
+  strategy: round-robin
+  disable-udp: false
+  proxies:
+  - BALANCE
+  - NUSANTARA
+  - SINGA
+  - DIRECT BESTPING
+  - DIRECT FALLBACK
+  - REJECT
+- name: 18+
+  type: select
+  strategy: round-robin
+  disable-udp: false
+  proxies:
+  - BALANCE
+  - NUSANTARA
+  - SINGA
+  - REJECT
+  - DIRECT BESTPING
+  - DIRECT FALLBACK
+- name: BALANCE
+  type: load-balance
+  strategy: round-robin
+  disable-udp: false
+  use:
+  - SG
+  - ID
+  url: http://www.gstatic.com/generate_204
+  interval: 30
+- name: FALLBACK
+  type: fallback
+  strategy: round-robin
+  disable-udp: false
+  use:
+  - SG
+  - ID
+  url: http://www.gstatic.com/generate_204
+  interval: 60
+- name: BEST-PING
+  type: url-test
+  strategy: round-robin
+  disable-udp: false
+  use:
+  - SG
+  - ID
+  url: http://www.gstatic.com/generate_204
+  interval: 60
+- name: NUSANTARA
+  type: load-balance
+  strategy: round-robin
+  disable-udp: false
+  use:
+  - ID
+  url: http://www.gstatic.com/generate_204
+  interval: 50
+- name: SINGA
+  type: load-balance
+  strategy: round-robin
+  disable-udp: false
+  use:
+  - SG
+  url: http://www.gstatic.com/generate_204
+  interval: 50
+- name: DIRECT BESTPING
+  type: select
+  strategy: round-robin
+  disable-udp: false
+  proxies:
+  - DIRECT HERO2LTE
+  - DIRECT MF90
+  - DIRECT MIDO
+  url: http://www.gstatic.com/generate_204
+  interval: 60
+- name: DIRECT FALLBACK
+  type: fallback
+  strategy: round-robin
+  disable-udp: false
+  proxies:
+  - DIRECT HERO2LTE
+  - DIRECT MF90
+  - DIRECT MIDO
+- name: DIRECT MF90
+  type: select
+  interface-name: eth1
+  proxies:
+  - DIRECT
+- name: DIRECT MIDO
+  type: select
+  interface-name: usb1
+  proxies:
+  - DIRECT
+- name: DIRECT HERO2LTE
+  type: select
+  interface-name: usb0
+  proxies:
+  - DIRECT
+rule-providers:
+  Portgames:
+    type: file
+    behavior: classical
+    path: "./rule_provider/portgames.yaml"
+  Gaming:
+    type: file
+    behavior: classical
+    path: "./rule_provider/gaming.yaml"
+  Game-TCP:
+    type: file
+    behavior: classical
+    path: "./rule_provider/gametcp.yaml"
+  Sosmed:
+    type: file
+    behavior: classical
+    path: "./rule_provider/sosmed.yaml"
+  Youtube:
+    type: file
+    behavior: domain
+    path: "./rule_provider/youtube.yaml"
+  Streaming:
+    type: file
+    behavior: classical
+    path: "./rule_provider/streaming.yaml"
+  Whatsapp:
+    type: file
+    behavior: classical
+    path: "./rule_provider/wa.yaml"
+  Zerotier:
+    type: file
+    behavior: classical
+    path: "./rule_provider/zerotier.yaml"
+  Indo:
+    type: file
+    behavior: classical
+    path: "./rule_provider/indo.yaml"
+  Bank-ewallet:
+    type: file
+    behavior: classical
+    path: "./rule_provider/bankingewallet.yaml"
+  Nsfw:
+    type: file
+    behavior: domain
+    path: "./rule_provider/nsfw.yaml"
+  18+:
+    type: file
+    behavior: domain
+    path: "./rule_provider/18+.yaml"
+  Basicads:
+    type: file
+    behavior: domain
+    path: "./rule_provider/basicads.yaml"
+  Personalads:
+    type: file
+    behavior: classical
+    path: "./rule_provider/personalads.yaml"
+  Market:
+    type: file
+    behavior: classical
+    path: "./rule_provider/marketplace.yaml"
+  Speed:
+    type: file
+    behavior: classical
+    path: "./rule_provider/speed.yaml"
+rules:
+- DST-PORT,7895,REJECT
+- DST-PORT,7892,REJECT
+- IP-CIDR,198.18.0.1/16,REJECT,no-resolve
+- IP-CIDR,198.18.0.1/16,REJECT,no-resolve
+- RULE-SET,Sosmed,SOSMED
+- RULE-SET,Market,SHOPPING
+- RULE-SET,Indo,AKUN-INDO
+- RULE-SET,Bank-ewallet,BANKING & E-WALLET
+- RULE-SET,Portgames,GAMING - MATCH
+- RULE-SET,Gaming,GAMING - ROOM
+- RULE-SET,Game-TCP,GAMING - ROOM
+- RULE-SET,Whatsapp,WHATSAPP
+- RULE-SET,Personalads,IKLAN
+- RULE-SET,Basicads,IKLAN
+- RULE-SET,18+,18+
+- RULE-SET,Nsfw,18+
+- RULE-SET,Youtube,YOUTUBE & STREAMING
+- RULE-SET,Streaming,YOUTUBE & STREAMING
+- RULE-SET,Speed,SPEEDTEST
+- RULE-SET,Zerotier,ZEROTIER
+- MATCH,UMUM
